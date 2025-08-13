@@ -142,8 +142,9 @@ class HashMap {
     constructor(capacity, loadFactor) {
         capacity = this.capacity;
         loadFactor = this.loadFactor;
-        size = capacity * loadFactor;
-        hashTable = new Array(size).fill(null);
+        buckets = Math.floor(capacity * loadFactor);
+        hashTable = new Array(buckets).fill(null);
+        keysTotal = 0;
     };
 
     hash(key) {
@@ -152,21 +153,11 @@ class HashMap {
         const primeNumber = 31;
         for (let i = 0; i < key.length; i++) {
             hashCode = primeNumber * hashCode + key.charCodeAt(i);
-            hashCode = hashCode % size;
+            hashCode = hashCode % buckets;
         }
 
         return hashCode;
     };
-
-    /*
-    First, hash the key
-    Next, check if the index at the hashcode is null
-    If null, create new LinkedList instance with key/value
-    If not null, check list for the key.
-    If key is in the list, update the corresponding value to the inputted value
-    if key is not in list, add new data and run a check on number of keys stored
-    If over bucket limit, resize
-    */
 
     set(key, value) {
         let hashCode = hash(key);
@@ -189,4 +180,20 @@ class HashMap {
 // EDIT FOR CASE WHERE KEYS EXCEED BUCKETS CAPACITY
 
     };
+
+    get(key) {
+        let hashCode = hash(key);
+        if (hashTable[hashCode]) {
+            let current = hashTable[hashCode].head;
+            while (current) {
+                if (current.key === key) {
+                    return current.value;
+                }
+                current = current.next;
+            }
+        }
+        return null;
+    };
+
+
 }
