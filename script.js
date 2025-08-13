@@ -195,5 +195,17 @@ class HashMap {
         return null;
     };
 
-
+    has(key) {
+        let hashCode = hash(key);
+        if (hashTable[hashCode]) {
+            let current = hashTable[hashCode].head;
+            while (current) {
+                if (current.key === key) {
+                    return true;
+                }
+                current = current.next;
+            }
+        }
+        return false;
+    };
 }
