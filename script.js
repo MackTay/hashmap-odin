@@ -208,4 +208,14 @@ class HashMap {
         }
         return false;
     };
+
+    remove(key) {
+        let hashCode = hash(key);
+        if (hashTable[hashCode]) {
+            let index = hashTable[hashCode].find(key);
+            hashTable[hashCode].removeAt(index);
+            return true;
+        }
+        return false;
+    };
 }
