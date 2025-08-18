@@ -266,5 +266,18 @@ class HashMap {
         return valArr;
     };
 
-    
+    entries() {
+        const entriesArr = [];
+
+        for (let i = 0; i < this.hashTable.length; i++) {
+            if (this.hashTable[i]) {
+                let current = this.hashTable[i].head;
+                while (current) {
+                    entriesArr.push([current.key, current.value]);
+                    current = current.next;
+                }
+            }
+        }
+        return entriesArr;
+    };
 }
