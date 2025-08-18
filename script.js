@@ -250,4 +250,21 @@ class HashMap {
         }
         return keyArr;
     };
+
+    values() {
+        const valArr = [];
+
+        for (let i = 0; i < this.hashTable.length; i++) {
+            if (this.hashTable[i]) {
+                let current = this.hashTable[i].head;
+                while (current) {
+                    valArr.push(current.value);
+                    current = current.next;
+                }
+            }
+        }
+        return valArr;
+    };
+
+    
 }
