@@ -159,13 +159,21 @@ class HashMap {
         return hashCode;
     };
 
+    /* set checks if the specific bucket is null (has no values) first, inserts linked list with value, and adds to keysTotal counter
+    
+    If it ISN'T null, check if it DOESN'T contain the inputted key. If it doesn't append that to the list and update keysTotal
+
+    If both those checks fail, iterate through the specified bucket and update the value */
+
     set(key, value) {
         let hashCode = hash(key);
         if (!hashTable[hashCode]) {
             hashTable[hashCode] = new LinkedList();
             hashTable[hashCode].append(key, value);
+            keysTotal += 1;
         } else if (!hashTable[hashCode].contains(key)) {
             hashTable[hashCode].append(key, value);
+            keysTotal += 1;
         } else {
             let current = hashTable[hashCode].head;
             while (current) {
@@ -217,5 +225,9 @@ class HashMap {
             return true;
         }
         return false;
+    };
+
+    length() {
+        
     };
 }
