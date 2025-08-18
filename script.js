@@ -142,8 +142,8 @@ class HashMap {
     constructor(capacity, loadFactor) {
         capacity = this.capacity;
         loadFactor = this.loadFactor;
-        buckets = Math.floor(capacity * loadFactor);
-        hashTable = new Array(buckets).fill(null);
+        buckets = Math.floor(this.capacity * this.loadFactor);
+        hashTable = new Array(this.buckets).fill(null);
         keysTotal = 0;
     };
 
@@ -153,7 +153,7 @@ class HashMap {
         const primeNumber = 31;
         for (let i = 0; i < key.length; i++) {
             hashCode = primeNumber * hashCode + key.charCodeAt(i);
-            hashCode = hashCode % buckets;
+            hashCode = hashCode % this.buckets;
         }
 
         return hashCode;
@@ -167,15 +167,15 @@ class HashMap {
 
     set(key, value) {
         let hashCode = hash(key);
-        if (!hashTable[hashCode]) {
-            hashTable[hashCode] = new LinkedList();
-            hashTable[hashCode].append(key, value);
-            keysTotal += 1;
-        } else if (!hashTable[hashCode].contains(key)) {
-            hashTable[hashCode].append(key, value);
-            keysTotal += 1;
+        if (!this.hashTable[hashCode]) {
+            this.hashTable[hashCode] = new LinkedList();
+            this.hashTable[hashCode].append(key, value);
+            this.keysTotal += 1;
+        } else if (!this.hashTable[hashCode].contains(key)) {
+            this.hashTable[hashCode].append(key, value);
+            this.keysTotal += 1;
         } else {
-            let current = hashTable[hashCode].head;
+            let current = this.hashTable[hashCode].head;
             while (current) {
                 if (current.key === key) {
                     current.value = value;
@@ -191,8 +191,8 @@ class HashMap {
 
     get(key) {
         let hashCode = hash(key);
-        if (hashTable[hashCode]) {
-            let current = hashTable[hashCode].head;
+        if (this.hashTable[hashCode]) {
+            let current = this.hashTable[hashCode].head;
             while (current) {
                 if (current.key === key) {
                     return current.value;
@@ -205,8 +205,8 @@ class HashMap {
 
     has(key) {
         let hashCode = hash(key);
-        if (hashTable[hashCode]) {
-            let current = hashTable[hashCode].head;
+        if (this.hashTable[hashCode]) {
+            let current = this.hashTable[hashCode].head;
             while (current) {
                 if (current.key === key) {
                     return true;
@@ -219,15 +219,24 @@ class HashMap {
 
     remove(key) {
         let hashCode = hash(key);
-        if (hashTable[hashCode]) {
-            let index = hashTable[hashCode].find(key);
-            hashTable[hashCode].removeAt(index);
+        if (this.hashTable[hashCode]) {
+            let index = this.hashTable[hashCode].find(key);
+            this.hashTable[hashCode].removeAt(index);
             return true;
         }
         return false;
     };
 
     length() {
-        
+        return this.keysTotal;
+    };
+
+    clear() {
+        this.hashTable = new Array(this.buckets).fill(null);
+        this.keysTotal = 0;
+    };
+
+    keys() {
+
     };
 }
