@@ -237,6 +237,17 @@ class HashMap {
     };
 
     keys() {
+        const keyArr = [];
 
+        for (let i = 0; i < this.hashTable.length; i++) {
+            if (this.hashTable[i]) {
+                let current = this.hashTable[i].head;
+                while (current) {
+                    keyArr.push(current.key);
+                    current = current.next;
+                }
+            }
+        }
+        return keyArr;
     };
 }
