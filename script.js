@@ -159,9 +159,9 @@ class HashMap {
         return hashCode;
     };
 
-    /* set checks if the specific bucket is null (has no values) first, inserts linked list with value, and adds to keysTotal counter
+    /* If bucket has no values, insert linked list with value, and add to keysTotal counter
     
-    If it ISN'T null, check if it DOESN'T contain the inputted key. If it doesn't append that to the list and update keysTotal
+    If values present, check if bucket DOESN'T contain key. If absent, append to list and update keysTotal
 
     If both those checks fail, iterate through the specified bucket and update the value */
 
@@ -222,6 +222,7 @@ class HashMap {
         if (this.hashTable[hashCode]) {
             let index = this.hashTable[hashCode].find(key);
             this.hashTable[hashCode].removeAt(index);
+            this.keysTotal -= 1;
             return true;
         }
         return false;
