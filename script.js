@@ -26,42 +26,6 @@ class LinkedList {
         }
     }
 
-    prepend(key, value) {
-        const newHead = new Node(key, value, this.head);
-        this.head = newHead;
-    }
-
-    size() {
-        let total;
-        if (!this.head) {
-            return total = 0;
-        } else {
-            let current = this.head;
-            total = 1;
-            while (current.next) {
-                current = current.next;
-                total += 1;
-            }
-            return total;
-        }
-    }
-
-    head() {
-        return this.head;
-    }
-
-    tail() {
-        if (!this.head) {
-            return;
-        } else {
-            let current = this.head;
-            while (current.next) {
-                current = current.next;
-            }
-            return current;
-        }
-    }
-
     at(index) {
         let total;
         if (!this.head) {
@@ -76,20 +40,6 @@ class LinkedList {
                 total += 1;
             }
             return current;
-        }
-    }
-
-    pop() {
-        if (!this.head) {
-            return;
-        } else if (!this.head.next) {
-            return this.head = null;
-        } else {
-            let current = this.head;
-            while (current.next.next) {
-                current = current.next;
-            }
-            return current.next = null;
         }
     }
 
@@ -185,7 +135,9 @@ class HashMap {
             }
         }
 
-// EDIT FOR CASE WHERE KEYS EXCEED BUCKETS CAPACITY
+        if (this.keysTotal === this.buckets) {
+            this.buckets *= 2;
+        }
 
     };
 
