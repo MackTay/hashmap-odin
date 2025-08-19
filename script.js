@@ -89,12 +89,12 @@ class LinkedList {
 };
 
 class HashMap {
-    constructor(capacity, loadFactor) {
-        capacity = this.capacity;
-        loadFactor = this.loadFactor;
-        buckets = Math.floor(this.capacity * this.loadFactor);
-        hashTable = new Array(this.buckets).fill(null);
-        keysTotal = 0;
+    constructor(capacity = 4, loadFactor = 0.75) {
+        this.capacity = capacity;
+        this.loadFactor = loadFactor;
+        this.buckets = Math.floor(this.capacity * this.loadFactor);
+        this.hashTable = new Array(this.buckets).fill(null);
+        this.keysTotal = 0;
     };
 
     hash(key) {
@@ -116,7 +116,7 @@ class HashMap {
     If both those checks fail, iterate through the specified bucket and update the value */
 
     set(key, value) {
-        let hashCode = hash(key);
+        let hashCode = this.hash(key);
         if (!this.hashTable[hashCode]) {
             this.hashTable[hashCode] = new LinkedList();
             this.hashTable[hashCode].append(key, value);
@@ -135,14 +135,24 @@ class HashMap {
             }
         }
 
+        /* Double bucket size, assign entries in current bucket to array, re-size hashTable.
+        Need to reset keysTotal as set() will add from zero in next step.
+        Next, re-assign values from entriesArr with set() to the newly sized hashTable */
+
         if (this.keysTotal === this.buckets) {
             this.buckets *= 2;
+            let entriesArr = this.entries();
+            this.hashTable = new Array(this.buckets).fill(null);
+
+            for (let i = 0; i < entriesArr.length; i++) {
+                this.set(entriesArr[i][0], entriesArr[i][1]);                
+            }
         }
 
     };
 
     get(key) {
-        let hashCode = hash(key);
+        let hashCode = this.hash(key);
         if (this.hashTable[hashCode]) {
             let current = this.hashTable[hashCode].head;
             while (current) {
@@ -156,7 +166,7 @@ class HashMap {
     };
 
     has(key) {
-        let hashCode = hash(key);
+        let hashCode = this.hash(key);
         if (this.hashTable[hashCode]) {
             let current = this.hashTable[hashCode].head;
             while (current) {
@@ -170,13 +180,14 @@ class HashMap {
     };
 
     remove(key) {
-        let hashCode = hash(key);
+        let hashCode = this.hash(key);
         if (this.hashTable[hashCode]) {
             let index = this.hashTable[hashCode].find(key);
+            if (index === null) return false;
             this.hashTable[hashCode].removeAt(index);
             this.keysTotal -= 1;
             return true;
-        }
+            }
         return false;
     };
 
