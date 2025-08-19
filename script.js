@@ -89,7 +89,7 @@ class LinkedList {
 };
 
 class HashMap {
-    constructor(capacity = 4, loadFactor = 0.75) {
+    constructor(capacity = 16, loadFactor = 0.75) {
         this.capacity = capacity;
         this.loadFactor = loadFactor;
         this.buckets = Math.floor(this.capacity * this.loadFactor);
@@ -139,10 +139,11 @@ class HashMap {
         Need to reset keysTotal as set() will add from zero in next step.
         Next, re-assign values from entriesArr with set() to the newly sized hashTable */
 
-        if (this.keysTotal === this.buckets) {
+        if (this.keysTotal > this.buckets) {
             this.buckets *= 2;
             let entriesArr = this.entries();
             this.hashTable = new Array(this.buckets).fill(null);
+            this.keysTotal = 0;
 
             for (let i = 0; i < entriesArr.length; i++) {
                 this.set(entriesArr[i][0], entriesArr[i][1]);                
